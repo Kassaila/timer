@@ -57,7 +57,7 @@
   </div>
   <script src="js/timer.js"></script>
   <script>
-    // Set date Timer example
+    // Set date Timer example | Пример таймера с указанной датой начала и окончания
     timer({
       idTimer: 'timer_block',
       setDeadLine: {
@@ -74,11 +74,11 @@
         errMsg: 'time is over' // string; default: '';
       },
       timerCallback() {
-        // function call when time is over
+        // function call when time is over | Вызов функции по завершению таймера
         console.log('time is over'); // optional;
       }
     });
-    // Loop Timer example
+    // Loop Timer example | Пример циклического таймера
     timer({
       idTimer: 'timer_loop_block',
       setDeadLine: {
@@ -97,7 +97,7 @@
         errMsg: 'pause before looping' // string; default: '';
       },
       timerCallback() {
-        // function call when time is over
+        // function call when time is over | Вызов функции по завершению таймера
         console.log('time loop is over'); // optional;
       }
     });
