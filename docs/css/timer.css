@@ -1,3 +1,4 @@
+/* All styles for example (not required) | Все стили к примеру (не обязательны) */
 body {
     font-family: Arial;
     width: 100vw;
@@ -48,8 +49,4 @@ body {
 
 .count_days {
     margin-right: 20px;
-}
-
-.text_err {
-    text-transform: uppercase;
 }
