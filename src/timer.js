@@ -47,14 +47,21 @@ function timer(setProp) {
     endYear: setProp.deadLine.endDate !== undefined && setProp.deadLine.endDate[2] !== undefined && typeof setProp.deadLine.endDate[2] === 'number' && setProp.deadLine.endDate[2] >= 0 ? setProp.deadLine.endDate[2] : curDate().getFullYear()
   }
   let textMsg = {
+    msgOutput: false,
     toStartMsg: '',
     toEndMsg: '',
     errMsg: ''
   }
   // Checking parameter values of text messages | Проверка значений параметров сообщений
   for (let prop in textMsg) {
-    if (setProp.textMsg !== undefined && setProp.textMsg[prop] !== undefined && typeof setProp.textMsg[prop] === 'string') {
+    if (setProp.textMsg !== undefined && setProp.textMsg[prop] !== undefined) {
       textMsg[prop] = setProp.textMsg[prop];
+    }
+  }
+  // Messages output | Вывод сообщений
+  let msgOutput = (msgArg) => {
+    if (textMsg.msgOutput === true) {
+      spanClass.msg.innerHTML = msgArg;
     }
   }
   // Init set Date & Time | Инициализация установленного времени и дат
@@ -100,22 +107,22 @@ function timer(setProp) {
     if (updTimer.count === 0 || sec() === 0 && min() === 0 && hour() === 0) {
       setTimeout(() => spanClass.day.innerHTML = day(), updTimer.count);
     }
-    // Text message output & callback call | Вывод текста и вызов callback
+    // Text message output & callback call | Вывод текстовых сообщений и вызов callback
     if (updTimer.count === 0 || diffTime() <= 0) {
       updTimer.count = 1000;
       if (startDate.getTime() - timeZoneDiff > curTime()) {
-        spanClass.msg.innerHTML = textMsg.toStartMsg;
+        msgOutput(textMsg.toStartMsg);
       } else if (startDate.getTime() - timeZoneDiff <= curTime() && deadLine.turnLoop === true) {
         if (Math.floor((loopTimeEnd - curTime()) / 1000) <= 0) {
-          spanClass.msg.innerHTML = textMsg.errMsg;
+          msgOutput(textMsg.errMsg);
           setProp.timerCallback();
         } else {
-          spanClass.msg.innerHTML = textMsg.toEndMsg;
+          msgOutput(textMsg.toEndMsg);
         }
       } else if (endDate.getTime() - timeZoneDiff > curTime() && deadLine.turnLoop === false) {
-        spanClass.msg.innerHTML = textMsg.toEndMsg;
+        msgOutput(textMsg.toEndMsg);
       } else {
-        spanClass.msg.innerHTML = textMsg.errMsg;
+        msgOutput(textMsg.errMsg);
         setProp.timerCallback();
       }
     }
