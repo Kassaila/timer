@@ -12,8 +12,6 @@
 ```html
   <!--set date Timer block-->
   <div id="timer_block">
-    <!--default output block for message-->
-    <div class="message"></div>
     <!--default output block for days-->
     <div class="days">00</div>
     <!--default output block for hours-->
