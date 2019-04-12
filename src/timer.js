@@ -4,9 +4,9 @@
  */
 function timer(setProp) {
   // Output elements for Timer data | Элементы вывода данных таймера
-  const timer = document.getElementById(setProp.idTimer)
+  const timer = document.querySelector(setProp.idTimer)
   // Spans default classes | Классы элементов вывода по умолчанию
-  let spanClass = {
+  const spanClass = {
     sec: timer.querySelector('.seconds'),
     min: timer.querySelector('.minutes'),
     hour: timer.querySelector('.hours'),
@@ -20,7 +20,7 @@ function timer(setProp) {
     }
   }
   // Init current date | Инициализация текущей даты
-  let curDate = () => new Date,
+  const curDate = () => new Date,
     curTime = () => curDate().getTime(),
     diffTime = () => Math.floor((setTime() - curTime()) / 1000),
     sec = () => diffTime() % 60,
@@ -46,7 +46,7 @@ function timer(setProp) {
     endMonth: setProp.deadLine.endDate !== undefined && setProp.deadLine.endDate[1] !== undefined && typeof setProp.deadLine.endDate[1] === 'number' && setProp.deadLine.endDate[1] > 0 && setProp.deadLine.endDate[1] <= 12 ? setProp.deadLine.endDate[1] - 1 : curDate().getMonth(),
     endYear: setProp.deadLine.endDate !== undefined && setProp.deadLine.endDate[2] !== undefined && typeof setProp.deadLine.endDate[2] === 'number' && setProp.deadLine.endDate[2] >= 0 ? setProp.deadLine.endDate[2] : curDate().getFullYear()
   }
-  let textMsg = {
+  const textMsg = {
     msgOutput: false,
     toStartMsg: '',
     toEndMsg: '',
@@ -59,7 +59,7 @@ function timer(setProp) {
     }
   }
   // Messages output | Вывод сообщений
-  let msgOutput = (msgArg) => {
+  const msgOutput = (msgArg) => {
     if (textMsg.msgOutput === true) {
       spanClass.msg.innerHTML = msgArg;
     }
@@ -75,7 +75,7 @@ function timer(setProp) {
   let loopTimeEnd,
     loopPauseEnd
   // Init timer period | Определение периода таймера
-  let setTime = () => {
+  const setTime = () => {
     if (startDate.getTime() - timeZoneDiff > curTime()) {
       return startDate.getTime() - timeZoneDiff;
     } else if (startDate.getTime() - timeZoneDiff <= curTime() && deadLine.turnLoop === true) {
@@ -95,7 +95,7 @@ function timer(setProp) {
     }
   }
   // Update Timer | Обновление таймера
-  let updTimer = () => {
+  const updTimer = () => {
     // Timer data output | Вывод данных таймера
     spanClass.sec.innerHTML = sec() > 9 ? sec() : '0' + sec();
     if (updTimer.count === 0 || sec() === 0) {
@@ -132,7 +132,7 @@ function timer(setProp) {
   // First call Timer | Первый вызов таймера
   updTimer();
   // Interval update Timer | Интервал обновления таймера
-  let updInterval = setInterval(() => {
+  const updInterval = setInterval(() => {
     if (endDate.getTime() - timeZoneDiff <= curTime() && deadLine.turnLoop === false) {
       clearInterval(updInterval);
     }

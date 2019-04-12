@@ -71,14 +71,14 @@
     // Example Timer with set date (start & end) | Пример таймера с указанной датой начала и окончания
     timer({
       // Timer block ID (required) | ID блока таймера (обязателен)
-      idTimer: 'timer_block',
+      idTimer: '#timer_block',
       // Output data spans custom classes (must be nested in Timer block) | Классы элементов вывода данных (должны быть вложены в блок таймера)
       spanClass: {
-        sec : 'date_seconds', // string; default: 'seconds'
-        min : 'date_minutes', // string; default: 'minutes'
-        hour : 'date_hours', // string; default: 'hours'
-        day : 'date_days', // string; default: 'days'
-        msg : 'date_message' // string; default: 'message'
+        sec: 'date_seconds', // string; default: 'seconds'
+        min: 'date_minutes', // string; default: 'minutes'
+        hour: 'date_hours', // string; default: 'hours'
+        day: 'date_days', // string; default: 'days'
+        msg: 'date_message' // string; default: 'message'
       },
       // Timer data (date and time of start and end timer, time zone, loop, looping period and pause) 
       // Данные таймера (дата и время начала и окончания таймера, часовой пояс, цикл, период цикла и паузы)
@@ -105,7 +105,7 @@
     // Example Timer with loop | Пример циклического таймера
     timer({
       // Timer block ID (required) | ID блока таймера (обязателен)
-      idTimer: 'timer_loop_block',
+      idTimer: '#timer_loop_block',
       // Timer data (date and time of start and end timer, time zone, loop, looping period and pause) 
       // Данные таймера (дата и время начала и окончания таймера, часовой пояс, цикл, период цикла и паузы)
       deadLine: {
