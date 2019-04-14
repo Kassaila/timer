@@ -46,6 +46,7 @@
 * [Типы Timer, настройка - даты, времени и часового пояса](#типы-timer-настройка---даты-времени-и-часового-пояса) 
     * [Общие параметры](#общие-параметры)  
     * [Специальные параметры](#специальные-параметры)  
+    * [Значения по умолчанию](#значения-по-умолчанию)  
 * [Состояния Timer и вывод сообщений](#состояния-timer-и-вывод-сообщений) 
 * [Callback](#callback)  
 ### Идентификация блока Timer
@@ -152,6 +153,23 @@ timer({
 * ***Циклический*** - с датой (временем) старта **Timer**, периодом повторения  и паузой между повторениями ;
 
 Рассмотрим настройку общих (часовой пояс, дата и время начала таймера) и специальных (дата и время окончания таймера, цикл, период цикла и паузы) параметров `deadLine` для каждого типа **Timer**.  
+#### *Значения по умолчанию*
+Если нужно что бы параметр в `deadLine` использовал значение по умолчанию, установите значение - `'default'`.
+```javascript
+timer({
+    idTimer: '#timer_block',
+    // Timer data (date and time of start and end timer, time zone, loop, looping period and pause) 
+    // Данные таймера (дата и время начала и окончания таймера, часовой пояс, цикл, период цикла и паузы)
+    deadLine: {
+        // location time zone UTC
+        timeZone: 'default', // number; range: (-12; 14); default: user current time zone
+        startDate: 'default', // [DD, MM, YYYY]; array of numbers; default: current date
+        startTime: 'default', // [HH, MM]; array of numbers; default: [0, 0]
+        endDate: 'default', // [DD, MM, YYYY]; array of numbers; default: current date
+        endTime: 'default' // [HH, MM]; array of numbers; default: [24, 0]
+     }
+});
+```
 ### *Общие параметры:*  
 `timeZone` - устанавливает часовой пояс UTC по которому будет работать **Timer** : диапазон от `-12` до `14`. Если значение не будет установлено, то будет использован часовой пояс пользователя установленный в ОС.
 ```javascript
