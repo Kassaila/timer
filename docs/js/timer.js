@@ -110,16 +110,16 @@ function timer(setProp) {
     // Text message output & callback call | Вывод текстовых сообщений и вызов callback
     if (updTimer.count === 0 || diffTime() <= 0) {
       updTimer.count = 1000;
-      if (startDate.getTime() - timeZoneDiff > curTime()) {
+      if (Math.floor((startDate.getTime() - timeZoneDiff) / 1000) > Math.floor(curTime() / 1000) + 1) {
         msgOutput(textMsg.toStartMsg);
-      } else if (startDate.getTime() - timeZoneDiff <= curTime() && deadLine.turnLoop === true) {
+      } else if (Math.floor((startDate.getTime() - timeZoneDiff) / 1000) <= Math.floor(curTime() / 1000) + 1 && deadLine.turnLoop === true) {
         if (Math.floor((loopTimeEnd - curTime()) / 1000) <= 0) {
           msgOutput(textMsg.errMsg);
           setProp.timerCallback();
         } else {
           msgOutput(textMsg.toEndMsg);
         }
-      } else if (endDate.getTime() - timeZoneDiff > curTime() && deadLine.turnLoop === false) {
+      } else if (Math.floor((endDate.getTime() - timeZoneDiff) / 1000) > Math.floor(curTime() / 1000) + 1 && deadLine.turnLoop === false) {
         msgOutput(textMsg.toEndMsg);
       } else {
         msgOutput(textMsg.errMsg);
@@ -133,9 +133,10 @@ function timer(setProp) {
   updTimer();
   // Interval update Timer | Интервал обновления таймера
   const updInterval = setInterval(() => {
-    if (endDate.getTime() - timeZoneDiff <= curTime() && deadLine.turnLoop === false) {
+    if (Math.floor((endDate.getTime() - timeZoneDiff) / 1000) <= Math.floor(curTime() / 1000) && deadLine.turnLoop === false) {
       clearInterval(updInterval);
+    } else {
+      updTimer();
     }
-    updTimer();
   }, 1000);
 }
