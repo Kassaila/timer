@@ -21,8 +21,8 @@ function timer(setProp) {
   }
   // Init current date | Инициализация текущей даты
   const curDate = () => new Date,
-    curTime = () => curDate().getTime(),
-    diffTime = () => Math.floor((setTime() - curTime()) / 1000),
+    curTime = () => Math.floor(curDate().getTime() / 1000),
+    diffTime = () => setTime() - curTime(),
     sec = () => diffTime() % 60,
     min = () => (diffTime() - sec()) / 60 % 60,
     hour = () => ((diffTime() - sec()) / 60 - min()) / 60 % 24,
@@ -68,28 +68,30 @@ function timer(setProp) {
   const startDate = new Date(deadLine.startYear, deadLine.startMonth, deadLine.startDay, deadLine.startHour, deadLine.startMin),
     endDate = new Date(deadLine.endYear, deadLine.endMonth, deadLine.endDay, deadLine.endHour, deadLine.endMin),
     // Time zone offset | Разность часовых поясов
-    timeZoneDiff = (deadLine.timeZone + curDate().getTimezoneOffset() / 60) * 3600000,
+    timeZoneDiff = (deadLine.timeZone + curDate().getTimezoneOffset() / 60) * 3600,
+    startDateTime = Math.floor(startDate.getTime() / 1000) - timeZoneDiff,
+    endDateTime = Math.floor(endDate.getTime() / 1000) - timeZoneDiff,
     // Init period looping | Определение периода повторения
     loopTimeHour = deadLine.startHour > deadLine.endHour ? deadLine.startHour - deadLine.endHour : 24 - (deadLine.endHour - deadLine.startHour),
-    loopTimeDiff = loopTimeHour * 3600000 + deadLine.startMin * 60000 - deadLine.endMin * 60000
+    loopTimeDiff = loopTimeHour * 3600 + deadLine.startMin * 60 - deadLine.endMin * 60
   let loopTimeEnd,
     loopPauseEnd
   // Init timer period | Определение периода таймера
   const setTime = () => {
-    if (startDate.getTime() - timeZoneDiff > curTime()) {
-      return startDate.getTime() - timeZoneDiff;
-    } else if (startDate.getTime() - timeZoneDiff <= curTime() && deadLine.turnLoop === true) {
+    if (startDateTime >= curTime()) {
+      return startDateTime;
+    } else if (startDateTime < curTime() && deadLine.turnLoop === true) {
       let loopTime
-      for (loopTime = startDate.getTime() - timeZoneDiff; loopTime < curTime(); loopTime += (deadLine.loopDays + deadLine.pauseDays) * 86400000) {}
-      loopTimeEnd = loopTime - deadLine.pauseDays * 86400000 - loopTimeDiff;
+      for (loopTime = startDateTime; loopTime < curTime(); loopTime += (deadLine.loopDays + deadLine.pauseDays) * 86400) { }
+      loopTimeEnd = loopTime - deadLine.pauseDays * 86400 - loopTimeDiff;
       loopPauseEnd = loopTime;
-      if (loopTimeEnd - curTime() <= 0) {
+      if (loopTimeEnd - curTime() < 0) {
         return loopPauseEnd;
       } else {
         return loopTimeEnd;
       }
-    } else if (endDate.getTime() - timeZoneDiff > curTime() && deadLine.turnLoop === false) {
-      return endDate.getTime() - timeZoneDiff;
+    } else if (endDateTime > curTime() && deadLine.turnLoop === false) {
+      return endDateTime;
     } else {
       return curTime();
     }
@@ -110,16 +112,16 @@ function timer(setProp) {
     // Text message output & callback call | Вывод текстовых сообщений и вызов callback
     if (updTimer.count === 0 || diffTime() <= 0) {
       updTimer.count = 1000;
-      if (Math.floor((startDate.getTime() - timeZoneDiff) / 1000) > Math.floor(curTime() / 1000) + 1) {
+      if (startDateTime > curTime()) {
         msgOutput(textMsg.toStartMsg);
-      } else if (Math.floor((startDate.getTime() - timeZoneDiff) / 1000) <= Math.floor(curTime() / 1000) + 1 && deadLine.turnLoop === true) {
-        if (Math.floor((loopTimeEnd - curTime()) / 1000) <= 0) {
+      } else if (startDateTime <= curTime() && deadLine.turnLoop === true) {
+        if (loopTimeEnd - curTime() <= 0) {
           msgOutput(textMsg.errMsg);
           setProp.timerCallback();
         } else {
           msgOutput(textMsg.toEndMsg);
         }
-      } else if (Math.floor((endDate.getTime() - timeZoneDiff) / 1000) > Math.floor(curTime() / 1000) + 1 && deadLine.turnLoop === false) {
+      } else if (endDateTime > curTime() && deadLine.turnLoop === false) {
         msgOutput(textMsg.toEndMsg);
       } else {
         msgOutput(textMsg.errMsg);
@@ -133,7 +135,7 @@ function timer(setProp) {
   updTimer();
   // Interval update Timer | Интервал обновления таймера
   const updInterval = setInterval(() => {
-    if (Math.floor((endDate.getTime() - timeZoneDiff) / 1000) <= Math.floor(curTime() / 1000) && deadLine.turnLoop === false) {
+    if (endDateTime < curTime() && deadLine.turnLoop === false) {
       clearInterval(updInterval);
     } else {
       updTimer();
