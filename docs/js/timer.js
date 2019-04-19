@@ -117,7 +117,7 @@ function timer(setProp) {
       } else if (startDateTime <= curTime() && deadLine.turnLoop === true) {
         if (loopTimeEnd - curTime() <= 0) {
           msgOutput(textMsg.errMsg);
-          setProp.timerCallback();
+          if(setProp.timerCallback !== undefined) setProp.timerCallback();
         } else {
           msgOutput(textMsg.toEndMsg);
         }
@@ -125,7 +125,7 @@ function timer(setProp) {
         msgOutput(textMsg.toEndMsg);
       } else {
         msgOutput(textMsg.errMsg);
-        setProp.timerCallback();
+        if(setProp.timerCallback !== undefined) setProp.timerCallback();
       }
     }
   }
